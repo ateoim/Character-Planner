@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "homepage": "https://ateoim.github.io/Character-Planner",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -31,6 +32,5 @@
     "gh-pages": "^6.2.0",
     "typescript": "^5.2.2",
     "vite": "^5.4.11"
-  },
-  "homepage": "https://ateoim.github.io/Character-Planner"
+  }
 }

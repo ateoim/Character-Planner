@@ -1,3 +1,5 @@
+import { Task } from "../types/types";
+
 interface StorageKeys {
   tasks: string;
   level: string;

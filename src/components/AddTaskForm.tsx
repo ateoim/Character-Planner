@@ -4,8 +4,6 @@ import styled from "styled-components";
 
 import { getAIAdvice } from "../services/openai";
 
-import { characters } from "../data/characters";
-
 import { taskCategories } from "../data/characterTasks";
 
 interface Props {

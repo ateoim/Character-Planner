@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Character } from "../types/types";
 
 const ProgressContainer = styled.div`
   margin: 20px 0;
@@ -25,9 +24,8 @@ const ProgressStats = styled.div`
 `;
 
 const CharacterProgress: React.FC<{
-  character: Character;
   completedTasks: number;
-}> = ({ character, completedTasks }) => {
+}> = ({ completedTasks }) => {
   const TASKS_PER_LEVEL = 3;
   const currentLevel = Math.floor(completedTasks / TASKS_PER_LEVEL);
   const tasksInCurrentLevel = completedTasks % TASKS_PER_LEVEL;

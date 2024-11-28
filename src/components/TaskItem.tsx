@@ -1,4 +1,6 @@
-const CategoryIcon = styled.span<{ categoryId: string }>`
+import styled from "styled-components";
+
+export const CategoryIcon = styled.span<{ categoryId: string }>`
   font-size: 1.2em;
   margin-right: 10px;
   opacity: 0.8;

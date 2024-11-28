@@ -1,4 +1,6 @@
-interface MiniGameProps {
+import { Character } from "../types/types";
+
+export interface MiniGameProps {
   character: Character;
   onComplete: (score: number) => void;
 }

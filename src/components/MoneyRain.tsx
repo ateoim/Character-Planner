@@ -11,26 +11,6 @@ const MoneyContainer = styled.div`
   z-index: 1000;
 `;
 
-const MoneySymbol = styled.div<{ x: number; delay: number }>`
-  position: absolute;
-  left: ${(props) => props.x}%;
-  color: #00ff00;
-  font-size: 24px;
-  opacity: 0.7;
-  animation: fall ${(props) => Math.random() * 3 + 2}s linear infinite;
-  animation-delay: ${(props) => props.delay}s;
-  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-
-  @keyframes fall {
-    0% {
-      transform: translateY(-50px) rotate(0deg);
-    }
-    100% {
-      transform: translateY(100vh) rotate(360deg);
-    }
-  }
-`;
-
 const symbols = ["💰", "💵", "💸", "$", "€", "£", "¥", "₿"];
 
 const MoneyRain: React.FC = () => {
@@ -41,7 +21,7 @@ const MoneyRain: React.FC = () => {
     const container = containerRef.current;
     if (!container) return;
 
-    const elements = Array.from({ length: symbolsCount }, (_, i) => {
+    const elements = Array.from({ length: symbolsCount }, () => {
       const symbol = document.createElement("div");
       const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
       const x = Math.random() * 100;

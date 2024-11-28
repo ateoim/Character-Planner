@@ -1,5 +1,5 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import styled from 'styled-components';
+import { Component, ErrorInfo, ReactNode } from "react";
+import styled from "styled-components";
 
 interface Props {
   children: ReactNode;
@@ -22,7 +22,7 @@ const ErrorContainer = styled.div`
 class ErrorBoundary extends Component<Props, State> {
   public state: State = {
     hasError: false,
-    error: null
+    error: null,
   };
 
   public static getDerivedStateFromError(error: Error): State {
@@ -30,7 +30,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    console.error("Uncaught error:", error, errorInfo);
   }
 
   public render() {
@@ -38,7 +38,7 @@ class ErrorBoundary extends Component<Props, State> {
       return (
         <ErrorContainer>
           <h2>Something went wrong.</h2>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
+          <details style={{ whiteSpace: "pre-wrap" }}>
             {this.state.error?.toString()}
           </details>
         </ErrorContainer>
@@ -49,4 +49,4 @@ class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-export default ErrorBoundary; 
+export default ErrorBoundary;

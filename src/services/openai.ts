@@ -171,7 +171,7 @@ const characterPrompts = {
 
 export const getAIAdvice = async (characterId: string, userInput: string) => {
   try {
-    const messages = [
+    const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       {
         role: "system",
         content: characterPrompts[characterId as keyof typeof characterPrompts],

@@ -158,50 +158,6 @@ const CategoryIcon = styled.div<{ categoryId: string }>`
   margin-right: 10px;
 `;
 
-const TaskInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    justify-content: space-between;
-  }
-`;
-
-// Add visual feedback animations
-const CompletionAnimation = styled.div`
-  position: absolute;
-  pointer-events: none;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: radial-gradient(
-    circle at center,
-    ${(props) => props.theme.accent}33 0%,
-    transparent 70%
-  );
-  opacity: 0;
-  animation: completion 0.6s ease-out;
-
-  @keyframes completion {
-    0% {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.1);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(1);
-    }
-  }
-`;
-
 interface Props {
   tasks: Task[];
 
@@ -263,10 +219,7 @@ const TaskList: React.FC<Props> = ({
 
   return (
     <TaskListContainer>
-      <CharacterProgress
-        character={character}
-        completedTasks={completedTasks}
-      />
+      <CharacterProgress completedTasks={completedTasks} />
 
       <TaskHeader>Daily Tasks</TaskHeader>
 

@@ -108,11 +108,14 @@ const ChatInput = styled.input`
   }
 `;
 
+interface Message {
+  content: string;
+  isUser: boolean;
+}
+
 const ChatInterface: React.FC<Props> = ({ character, onAddTask }) => {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<
-    Array<{ content: string; isUser: boolean }>
-  >([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -122,52 +125,6 @@ const ChatInterface: React.FC<Props> = ({ character, onAddTask }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  // Helper function to extract time from message
-  const extractTime = (message: string): Date | null => {
-    // Look for common time patterns
-    const timePatterns = [
-      /(\d{1,2})(:\d{2})?\s*(pm|am)/i, // 11:00pm or 11pm
-      /at\s+(\d{1,2})(:\d{2})?\s*(pm|am)/i, // at 11:00pm
-      /(\d{1,2})(:\d{2})?/, // 11:00 or 11
-    ];
-
-    for (const pattern of timePatterns) {
-      const match = message.match(pattern);
-      if (match) {
-        const date = new Date();
-        let hours = parseInt(match[1]);
-        const minutes = match[2] ? parseInt(match[2].replace(":", "")) : 0;
-        const meridian = match[3]?.toLowerCase();
-
-        // Convert to 24-hour format if pm
-        if (meridian === "pm" && hours !== 12) hours += 12;
-        if (meridian === "am" && hours === 12) hours = 0;
-
-        date.setHours(hours, minutes, 0, 0);
-        return date;
-      }
-    }
-    return null;
-  };
-
-  // Helper function to check if message is about scheduling
-  const isSchedulingRequest = (message: string): boolean => {
-    const schedulingKeywords = [
-      "watch",
-      "see",
-      "view",
-      "start",
-      "begin",
-      "at",
-      "schedule",
-      "plan",
-      "remind",
-    ];
-    return schedulingKeywords.some((keyword) =>
-      message.toLowerCase().includes(keyword)
-    );
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -200,20 +157,21 @@ const ChatInterface: React.FC<Props> = ({ character, onAddTask }) => {
         onAddTask(response.task, response.comment, dueDate);
 
         // Add AI's response to chat
+        const messageContent = `${response.comment}\nI've added "${
+          response.task
+        }" to your tasks for ${dueDate.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}.`;
         setMessages((prev) => [
           ...prev,
-          {
-            content: `${response.comment}\nI've added "${
-              response.task
-            }" to your tasks for ${dueDate.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}.`,
-            isUser: false,
-          },
+          { content: messageContent, isUser: false },
         ]);
       } else {
-        setMessages((prev) => [...prev, { content: response, isUser: false }]);
+        setMessages((prev) => [
+          ...prev,
+          { content: String(response), isUser: false },
+        ]);
       }
     } catch (error) {
       console.error("Error getting AI response:", error);

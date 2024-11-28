@@ -1,4 +1,6 @@
-const TaskDescription = styled.div`
+import styled from "styled-components";
+
+export const TaskDescription = styled.div`
   // ... existing styles ...
 
   .highlight-word {

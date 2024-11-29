@@ -1,26 +1,29 @@
+import { config } from "../config";
+
 export const getAIAdvice = async (characterId: string, userInput: string) => {
   try {
-    const response = await fetch(
-      "https://character-portal-dd8jv6tj1-toms-projects-589fd1bc.vercel.app/api/chat",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          characterId,
-          userInput,
-        }),
-      }
-    );
+    const response = await fetch(`${config.apiUrl}/api/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        characterId,
+        userInput,
+      }),
+    });
 
     if (!response.ok) {
-      throw new Error("Failed to get AI response");
+      const error = await response.json();
+      throw new Error(error.message || "Failed to get AI response");
     }
 
     return await response.json();
   } catch (error) {
     console.error("Error getting AI advice:", error);
-    return "My mind is elsewhere at the moment. Try again shortly.";
+    if (error.message.includes("rate limit")) {
+      return "I'm receiving too many requests. Please wait a moment.";
+    }
+    return "An error occurred. Please try again later.";
   }
 };

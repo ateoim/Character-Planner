@@ -3,20 +3,43 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { OpenAI } from "openai";
 import { characterPrompts } from "./prompts";
+import rateLimit from "express-rate-limit";
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:5175",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+
+app.use("/api/", limiter);
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-app.post("/api/advice", async (req, res) => {
+app.post("/api/chat", async (req, res) => {
   try {
     const { characterId, userInput } = req.body;
+
+    if (!characterPrompts[characterId as keyof typeof characterPrompts]) {
+      return res.status(400).json({
+        error: `Character prompt not found for: ${characterId}`,
+      });
+    }
 
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -33,7 +56,10 @@ app.post("/api/advice", async (req, res) => {
     res.json(response.choices[0].message.content);
   } catch (error) {
     console.error("OpenAI API error:", error);
-    res.status(500).json({ error: "Failed to get AI response" });
+    res.status(500).json({
+      error:
+        error instanceof Error ? error.message : "Failed to get AI response",
+    });
   }
 });
 

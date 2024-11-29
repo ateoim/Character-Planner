@@ -9,4 +9,5 @@ export default defineConfig({
     assetsDir: "assets",
     sourcemap: true,
   },
+  envPrefix: "VITE_",
 });

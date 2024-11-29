@@ -24,16 +24,17 @@ const SendButton = styled.button`
   padding: 12px 24px;
   border: none;
   border-radius: 12px;
-  background: #621b1b;
-  color: ${(props) => props.theme.text};
+  background: ${(props) => props.theme.accent};
+  color: ${(props) =>
+    props.theme.background === "#000000" ? "#FFFFFF" : "#000000"};
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: #8b2626;
+    opacity: 0.9;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(139, 38, 38, 0.2);
+    box-shadow: 0 4px 12px ${(props) => props.theme.accent}33;
   }
 
   &:active {
@@ -43,10 +44,11 @@ const SendButton = styled.button`
 
 const ChatContainer = styled.div`
   margin-top: 2rem;
-  background: ${(props) => props.theme.secondary}11;
+  background: ${(props) => props.theme.secondary}22;
   border-radius: 24px;
   padding: 24px;
   backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 
   @media (max-width: 768px) {
     padding: 16px;
@@ -72,28 +74,32 @@ const Message = styled.div<{ isUser?: boolean }>`
   padding: 12px 16px;
   border-radius: 12px;
   max-width: 80%;
+  background: ${(props) =>
+    props.isUser
+      ? `${props.theme.secondary}ee`
+      : `${props.theme.background}ee`};
+  color: ${(props) => props.theme.text};
+  border: 1px solid ${(props) => props.theme.accent}44;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
   ${(props) =>
     props.isUser
       ? `
     margin-left: auto;
-    background: #4a1414;
-    color: ${props.theme.text};
-    border: 1px solid #621b1b;
+    border-bottom-right-radius: 4px;
   `
       : `
     margin-right: auto;
-    background: #2c0a0a;
-    color: ${props.theme.text};
-    border: 1px solid #4a1414;
+    border-bottom-left-radius: 4px;
   `}
 `;
 
 const ChatInput = styled.input`
   flex: 1;
   padding: 12px 16px;
-  border: 1px solid #621b1b;
+  border: 1px solid ${(props) => props.theme.accent}66;
   border-radius: 12px;
-  background: #2c0a0a;
+  background: ${(props) => props.theme.background}ee;
   color: ${(props) => props.theme.text};
   font-size: 1rem;
 
@@ -103,8 +109,8 @@ const ChatInput = styled.input`
 
   &:focus {
     outline: none;
-    border-color: #8b2626;
-    box-shadow: 0 0 0 2px rgba(139, 38, 38, 0.2);
+    border-color: ${(props) => props.theme.accent};
+    box-shadow: 0 0 0 2px ${(props) => props.theme.accent}33;
   }
 `;
 
@@ -117,6 +123,7 @@ const ChatInterface: React.FC<Props> = ({ character, onAddTask }) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -130,10 +137,11 @@ const ChatInterface: React.FC<Props> = ({ character, onAddTask }) => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    // Add user message
-    setMessages((prev) => [...prev, { content: input, isUser: true }]);
-
+    setIsLoading(true);
     try {
+      // Add user message
+      setMessages((prev) => [...prev, { content: input, isUser: true }]);
+
       const response = await getAIAdvice(character.id, input);
 
       if (typeof response === "object" && response.type === "task") {
@@ -175,6 +183,8 @@ const ChatInterface: React.FC<Props> = ({ character, onAddTask }) => {
       }
     } catch (error) {
       console.error("Error getting AI response:", error);
+    } finally {
+      setIsLoading(false);
     }
 
     setInput("");

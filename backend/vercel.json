@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/api/chat",
-      "methods": ["POST"],
+      "methods": ["POST", "OPTIONS"],
       "dest": "server.ts"
     },
     {
@@ -26,11 +26,18 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://ateoim.github.io"
+          "value": "*"
         },
-        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET,POST,OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
       ]
     }
-  ]
+  ],
+  "public": true
 }

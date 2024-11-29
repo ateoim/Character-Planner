@@ -8,15 +8,29 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/server.ts"
+      "src": "/api/chat",
+      "methods": ["POST"],
+      "dest": "server.ts"
     },
     {
       "src": "/(.*)",
-      "dest": "/server.ts"
+      "dest": "server.ts"
     }
   ],
   "env": {
     "OPENAI_API_KEY": "@openai_api_key"
-  }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://ateoim.github.io"
+        },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    }
+  ]
 }

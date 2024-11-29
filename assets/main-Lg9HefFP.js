@@ -1162,4 +1162,4 @@ to {
   border-radius: 4px;
   color: #c62828;
 `;class Qy extends I.Component{constructor(){super(...arguments);Vs(this,"state",{hasError:!1,error:null})}static getDerivedStateFromError(n){return{hasError:!0,error:n}}componentDidCatch(n,r){console.error("Uncaught error:",n,r)}render(){var n;return this.state.hasError?k.jsxs(Vy,{children:[k.jsx("h2",{children:"Something went wrong."}),k.jsx("details",{style:{whiteSpace:"pre-wrap"},children:(n=this.state.error)==null?void 0:n.toString()})]}):this.props.children}}Pa.createRoot(document.getElementById("root")).render(k.jsx(Oe.StrictMode,{children:k.jsx(Qy,{children:k.jsx(Wy,{})})}));
-//# sourceMappingURL=index-Lg9HefFP.js.map
+//# sourceMappingURL=main-Lg9HefFP.js.map

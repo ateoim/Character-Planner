@@ -123,7 +123,6 @@ const ChatInterface: React.FC<Props> = ({ character, onAddTask }) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -137,7 +136,6 @@ const ChatInterface: React.FC<Props> = ({ character, onAddTask }) => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    setIsLoading(true);
     try {
       // Add user message
       setMessages((prev) => [...prev, { content: input, isUser: true }]);
@@ -183,8 +181,6 @@ const ChatInterface: React.FC<Props> = ({ character, onAddTask }) => {
       }
     } catch (error) {
       console.error("Error getting AI response:", error);
-    } finally {
-      setIsLoading(false);
     }
 
     setInput("");

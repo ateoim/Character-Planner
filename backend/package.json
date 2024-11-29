@@ -2,7 +2,8 @@
   "scripts": {
     "start": "ts-node server.ts",
     "dev": "nodemon server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "vercel-build": "echo hello"
   },
   "name": "backend",
   "version": "1.0.0",

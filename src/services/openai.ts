@@ -19,9 +19,9 @@ export const getAIAdvice = async (characterId: string, userInput: string) => {
     }
 
     return await response.json();
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error getting AI advice:", error);
-    if (error.message.includes("rate limit")) {
+    if (error instanceof Error && error.message.includes("rate limit")) {
       return "I'm receiving too many requests. Please wait a moment.";
     }
     return "An error occurred. Please try again later.";

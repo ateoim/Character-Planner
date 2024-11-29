@@ -14,6 +14,7 @@ app.use(
       "http://localhost:5173",
       "http://localhost:5174",
       "http://localhost:5175",
+      "https://ateoim.github.io",
     ],
     credentials: true,
   })
@@ -26,6 +27,10 @@ const limiter = rateLimit({
 });
 
 app.use("/api/", limiter);
+
+app.get("/", (req, res) => {
+  res.json({ message: "Server is running" });
+});
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

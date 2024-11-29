@@ -28,6 +28,11 @@ const limiter = rateLimit({
 
 app.use("/api/", limiter);
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
+});
+
 app.get("/", (req, res) => {
   res.json({ message: "Server is running" });
 });

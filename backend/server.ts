@@ -10,7 +10,11 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: ["https://ateoim.github.io", "http://localhost:5173"],
+    origin: [
+      "https://ateoim.github.io",
+      "http://localhost:5173",
+      "https://ateoim.github.io/Character-Planner",
+    ],
     methods: ["GET", "POST", "OPTIONS"],
     credentials: true,
     optionsSuccessStatus: 200,
